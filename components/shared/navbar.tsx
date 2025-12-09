@@ -2,35 +2,65 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const loginDetails = useSelector((state: any) => state.loginDetails);
+  const cart = useSelector((state: any) => state.productOperations);
+  const userDetails = useSelector((state:any) => state.userDetails.userDetails);
+  console.log("Cart Items:", cart , userDetails);
+
+  const getInitials = (name: string) => {
+    if (!name) return "U";
+    const split = name.split(" ");
+    if (split.length === 1) return split[0][0];
+    return split[0][0] + split[1][0];
+  };
+
+
+  const router = useRouter();
   return (
     <nav className="w-full border-b bg-white">
       <div className="flex items-center justify-between px-6 py-3">
-        {/* Left Section - Logo */}
         <div className="flex items-center gap-2">
           <Menu className="h-5 w-5 md:hidden" />
-          <h1 className="text-xl font-semibold">My Dashboard</h1>
+          <h1 className="text-xl font-semibold">{`Welcome ${loginDetails.name}`}</h1>
         </div>
 
-        {/* Right Section - Popover */}
-        <div>
+        <div className="flex items-center gap-4">
+          <Button variant="outline" className="relative">
+            <ShoppingCart className="h-5 w-5" />
+            {cart?.length > 0 && (
+              <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                {cart.length}
+              </span>
+            )}
+          </Button>
+
+          {userDetails?.isAdmin === "true" ? <Button onClick={()=>router.replace('/dashboard/addproduct')}>Add Products</Button> : <></>}
+
+          {/* Profile Popover */}
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline">
                 <Avatar>
+                  {loginDetails.name ? (
+                    <AvatarFallback>{getInitials(loginDetails.name)}</AvatarFallback>
+                  ) : (
+                    <AvatarFallback>U</AvatarFallback>
+                  )}
                   <AvatarImage
                     src="https://github.com/shadcn.png"
                     alt="@shadcn"
                   />
-                  <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </Button>
             </PopoverTrigger>
@@ -44,7 +74,7 @@ export default function Navbar() {
                   </p>
                 </div>
 
-                <Button variant="ghost" className="justify-start">
+                <Button variant="ghost" className="justify-start" onClick={()=> router.replace('/profile')}>
                   Account
                 </Button>
 
@@ -52,7 +82,7 @@ export default function Navbar() {
                   Settings
                 </Button>
 
-                <Button variant="destructive" className="justify-start">
+                <Button variant="destructive" className="justify-start" onClick={()=> router.replace('/login')}>
                   Logout
                 </Button>
               </div>
