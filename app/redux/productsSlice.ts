@@ -1,3 +1,4 @@
+import api from "@/services/api";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Product {
@@ -23,43 +24,28 @@ const initialState: ProductsState = {
 export const fethProducts = createAsyncThunk<Product[]>(
   "products/fetch",
   async () => {
-    const res = await fetch("http://localhost:5000/api/products/getAll");
-    const data = await res.json();
-    return data.products as Product[];
+    const res:any = await api.get("/products/getAll");
+    return res.products as Product[];
   }
 );
 
+// Add Product
 export const addProduct = createAsyncThunk<Product, Product>(
   "products/add",
   async (product) => {
-    const res = await fetch("http://localhost:5000/api/products/addproduct", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    });
-
-    const data = await res.json();
-    return data.product as Product;
+    const res = await api.post("/products/addproduct", product);
+    return res.data.product as Product;
   }
 );
 
+// Delete Product
 export const deleteProduct = createAsyncThunk<string, string>(
   "products/delete",
   async (id) => {
-    const res = await fetch(`http://localhost:5000/api/products/delete/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await res.json();
+    await api.delete(`/products/delete/${id}`);
     return id;
   }
 );
-
 const productsSlice = createSlice({
   name: "productsSlice",
   initialState,
