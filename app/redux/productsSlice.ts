@@ -24,8 +24,8 @@ const initialState: ProductsState = {
 export const fethProducts = createAsyncThunk<Product[]>(
   "products/fetch",
   async () => {
-    const res:any = await api.get("/products/getAll");
-    return res.products as Product[];
+    const res:any = await api.get('/products/getAll')
+    return res.data.products as Product[];
   }
 );
 
