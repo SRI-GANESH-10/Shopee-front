@@ -1,65 +1,88 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
+import React from "react";
+import { useSelector } from "react-redux";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 export default function Profile() {
-  const userDetails = useSelector((state: any) => state.userDetails.userDetails)
+  const userDetails = useSelector((state: any) => state.userDetails.userDetails);
 
-  const {
-    name,
-    email,
-    isAdmin,
-    _id
-  } = userDetails || {}
+  const { name, email, isAdmin } = userDetails || {};
 
   return (
-    <div className="h-[calc(100vh-180px)] bg-gray-50 px-6 py-10">
-      
-      {/* Header Section */}
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800">Profile</h1>
-        <p className="text-gray-500 mt-1">Manage your personal information</p>
-      </div>
-
-      <Separator className="my-6 max-w-5xl mx-auto" />
-
-      {/* Profile Info Section */}
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10">
+    <div className="min-h-[calc(100vh-120px)] bg-gradient-to-b from-gray-50 to-gray-100 p-8">
+      <div className="max-w-4xl mx-auto space-y-8">
         
-        {/* Left: Avatar */}
-        <div className="flex flex-col items-center gap-4">
-          <Avatar className="h-32 w-32">
-            <AvatarFallback className="text-3xl font-bold">
-              {name?.charAt(0)?.toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-
-          <Badge className="text-sm px-4 py-1" variant={isAdmin === "true" ? "default" : "secondary"}>
-            {isAdmin === "true" ? "Admin" : "User"}
-          </Badge>
+        {/* Page Header */}
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            Account Profile
+          </h1>
+          <p className="text-gray-600 mt-1 text-sm">
+            View and manage your account information
+          </p>
         </div>
 
-        {/* Right: Details */}
-        <div className="flex-1 space-y-6">
-          <div>
-            <label className="text-sm text-gray-500">Full Name</label>
-            <div className="text-lg font-medium text-gray-800 mt-1">
-              {name || 'Not Available'}
-            </div>
-          </div>
+        {/* Profile Card */}
+        <Card className="rounded-2xl shadow-md border bg-white">
+          <CardContent className="p-8">
+            <div className="flex flex-col md:flex-row gap-10 items-center">
+              
+              {/* Avatar Section */}
+              <div className="flex flex-col items-center gap-4">
+                <Avatar className="h-36 w-36 shadow-sm border">
+                  <AvatarFallback className="text-4xl font-bold bg-gray-100">
+                    {name?.charAt(0)?.toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
 
-          <div>
-            <label className="text-sm text-gray-500">Email Address</label>
-            <div className="text-lg font-medium text-gray-800 mt-1">
-              {email || 'Not Available'}
+                <Badge
+                  className="px-4 py-1 text-sm rounded-full"
+                  variant={isAdmin === "true" ? "default" : "secondary"}
+                >
+                  {isAdmin === "true" ? "Admin" : "User"}
+                </Badge>
+              </div>
+
+              {/* Info Section */}
+              <div className="flex-1 w-full space-y-6">
+                
+                {/* Full Name */}
+                <div>
+                  <label className="text-sm text-gray-500">Full Name</label>
+                  <p className="text-lg font-semibold text-gray-900 mt-1">
+                    {name || "Not Available"}
+                  </p>
+                </div>
+
+                <Separator />
+
+                {/* Email */}
+                <div>
+                  <label className="text-sm text-gray-500">Email Address</label>
+                  <p className="text-lg font-semibold text-gray-900 mt-1">
+                    {email || "Not Available"}
+                  </p>
+                </div>
+
+                <Separator />
+
+                {/* Role */}
+                <div>
+                  <label className="text-sm text-gray-500">Account Role</label>
+                  <p className="text-lg font-semibold text-gray-900 mt-1">
+                    {isAdmin === "true" ? "Administrator" : "Standard User"}
+                  </p>
+                </div>
+
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
-  )
+  );
 }

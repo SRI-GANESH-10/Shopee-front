@@ -18,8 +18,8 @@ export default function Page() {
   const [formData, setFormData] = useState({
     id: "",
     name: "",
-    quantity: "",
-    price: "",
+    quantity: 0,
+    price: 0,
     description: "",
   });
 
@@ -34,9 +34,8 @@ export default function Page() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Product Data:", formData);
     dispatch(addProduct(formData))
-    router.replace('/dashboard')
+    router.push('/dashboard')
   };
 
   return (

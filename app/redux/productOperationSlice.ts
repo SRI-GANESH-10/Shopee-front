@@ -1,24 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Product } from "./productsSlice";
 
-const initialState:Product[] = [];
+const initialState: Product[] = [];
 
 const productOperationSlice = createSlice({
-    name: "productOperationSlice",
-    initialState,
-    reducers: {
-        addProduct: (state, action) => {
-            console.log("Adding product:", action.payload);
-            state.push(action.payload);
-        },
-        removeProduct: (state, action) => {
-            return state.filter(product => product.id !== action.payload);
-        },
-        clearProducts: (state) => {
-            return [];
-        }
-    },
-})
+  name: "productOperationSlice",
+  initialState,
+  reducers: {
+    addProduct: (state, action) => {
+      const product = action.payload;
+      const existingProduct = state.find((p) => p.id === product.id);
 
-export const { addProduct, removeProduct } = productOperationSlice.actions;
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        state.push({ ...product, quantity: 1 });
+      }
+    },
+
+    removeProduct: (state, action) => {
+      const id = action.payload;
+      const existingProduct = state.find((p) => p.id === id);
+
+      if (existingProduct?.quantity) {
+        if (existingProduct.quantity > 1) {
+          existingProduct.quantity -= 1; 
+        } else {
+          return state.filter((p) => p.id !== id);
+        }
+      }
+    },
+
+    clearProducts: () => {
+      return [];
+    },
+  },
+});
+
+export const { addProduct, removeProduct, clearProducts } =
+  productOperationSlice.actions;
+
 export default productOperationSlice.reducer;

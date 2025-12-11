@@ -32,11 +32,11 @@ export default function Navbar() {
       <div className="flex items-center justify-between px-6 py-3">
         <div className="flex items-center gap-2">
           <Menu className="h-5 w-5 md:hidden" />
-          <h1 className="text-xl font-semibold">{`Welcome ${loginDetails.name}`}</h1>
+          <h1 className="text-xl font-semibold" onClick={()=> router.push('/dashboard')}>{`Welcome ${loginDetails.name}`}</h1>
         </div>
 
         <div className="flex items-center gap-4">
-          <Button variant="outline" className="relative">
+          <Button variant="outline" className="relative" onClick={()=> router.push('/cart')}>
             <ShoppingCart className="h-5 w-5" />
             {cart?.length > 0 && (
               <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
@@ -45,7 +45,7 @@ export default function Navbar() {
             )}
           </Button>
 
-          {userDetails?.isAdmin === "true" ? <Button onClick={()=>router.replace('/dashboard/addproduct')}>Add Products</Button> : <></>}
+          {userDetails?.isAdmin === "true" ? <Button onClick={()=>router.push('/dashboard/addproduct')}>Add Products</Button> : <></>}
 
           {/* Profile Popover */}
           <Popover>
@@ -74,7 +74,7 @@ export default function Navbar() {
                   </p>
                 </div>
 
-                <Button variant="ghost" className="justify-start" onClick={()=> router.replace('/profile')}>
+                <Button variant="ghost" className="justify-start" onClick={()=> router.push('/profile')}>
                   Account
                 </Button>
 
@@ -82,7 +82,7 @@ export default function Navbar() {
                   Settings
                 </Button>
 
-                <Button variant="destructive" className="justify-start" onClick={()=> router.replace('/login')}>
+                <Button variant="destructive" className="justify-start" onClick={()=> router.push('/login')}>
                   Logout
                 </Button>
               </div>

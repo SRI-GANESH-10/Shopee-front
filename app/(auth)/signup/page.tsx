@@ -31,7 +31,7 @@ export default function SignUp() {
       return;
     }
     else{
-      router.replace('/login');
+      router.push('/login');
     }
    }
     catch(err:any){
