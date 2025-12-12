@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, fethProducts } from "@/app/redux/productsSlice";
 import { addProduct, removeProduct } from "@/app/redux/productOperationSlice";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ProductCard from "@/components/shared/ProductCard";
+import ProductDetailsDialog from "@/components/shared/ProductDialog";
 
 export default function DashBoard() {
   const products = useSelector((state: any) => state.productList);
@@ -15,12 +17,19 @@ export default function DashBoard() {
   const cart = useSelector((state: any) => state.productOperations);
   const dispatch: any = useDispatch();
 
+  // Dialog state
+  const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+
   useEffect(() => {
     dispatch(fethProducts());
   }, [dispatch]);
 
-  const handleDelete = (id: string) => {
-    dispatch(deleteProduct(id));
+  const handleDelete = (id: string) => dispatch(deleteProduct(id));
+
+  const handleCardClick = (product: any) => {
+    setSelectedProduct(product);
+    setOpen(true);
   };
 
   return (
@@ -35,16 +44,16 @@ export default function DashBoard() {
 
               return (
                 <ProductCard
-  key={item.id}
-  item={item}
-  cartItem={cart.find((prod: any) => prod.id === item.id)}
-  isAdmin={userDetails?.isAdmin === "true"}
-  onAdd={(product: any) => dispatch(addProduct(product))}
-  onIncrease={(product: any) => dispatch(addProduct(product))}
-  onDecrease={(id: string) => dispatch(removeProduct(id))}
-  onDelete={handleDelete}
-/>
-
+                  key={item.id}
+                  item={item}
+                  cartItem={isInCart}
+                  isAdmin={userDetails?.isAdmin === "true"}
+                  onAdd={(p: any) => dispatch(addProduct(p))}
+                  onIncrease={(p: any) => dispatch(addProduct(p))}
+                  onDecrease={(id: string) => dispatch(removeProduct(id))}
+                  onDelete={handleDelete}
+                  onCardClick={handleCardClick}
+                />
               );
             })
           ) : (
@@ -52,6 +61,13 @@ export default function DashBoard() {
           )}
         </div>
       </ScrollArea>
+
+      <ProductDetailsDialog
+        open={open}
+        setOpen={setOpen}
+        product={selectedProduct}
+        onAddToCart={(product: any) => dispatch(addProduct(product))}
+      />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ProductCard({
   item,
@@ -15,8 +16,10 @@ export default function ProductCard({
   onAdd,
   onDelete,
 }: any) {
+
+  const router = useRouter();
   return (
-    <Card className="hover:shadow-lg transition-all rounded-xl border p-2">
+    <Card className="hover:shadow-lg transition-all rounded-xl border p-2"       onClick={() => router.push(`/dashboard/product/${item.id}`)}>
       <CardHeader className="p-0">
         <div className="h-44 w-full bg-white flex items-center justify-center overflow-hidden rounded-md">
           <img
