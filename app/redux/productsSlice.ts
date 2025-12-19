@@ -29,11 +29,15 @@ export const fethProducts = createAsyncThunk<Product[]>(
   }
 );
 
-// Add Product
-export const addProduct = createAsyncThunk<Product, Product>(
+// After (accept FormData)
+export const addProduct = createAsyncThunk<Product, FormData>(
   "products/add",
-  async (product) => {
-    const res = await api.post("/products/addproduct", product);
+  async (formData) => {
+    const res = await api.post("/products/addproduct", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data.product as Product;
   }
 );

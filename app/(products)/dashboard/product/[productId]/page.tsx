@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "@/app/redux/productOperationSlice";
 import { fethProducts } from "@/app/redux/productsSlice";
@@ -15,6 +15,8 @@ export default function ProductDetailsPage() {
   const dispatch = useDispatch<any>();
 
   const products = useSelector((state: any) => state.productList.items);
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     dispatch(fethProducts());
@@ -46,7 +48,7 @@ export default function ProductDetailsPage() {
         <div className="border rounded-2xl p-6 bg-white shadow-sm h-[480px] flex items-center justify-center">
           <img
             src={
-              product?.images?.[0] ??
+              product?.images?.[selectedImageIndex] ??
               `https://picsum.photos/id/${product.id}/1600/1200`
             }
             alt={product.name}
@@ -60,7 +62,10 @@ export default function ProductDetailsPage() {
             <img
               key={idx}
               src={img}
-              className="h-20 w-20 border rounded-xl p-1 object-cover cursor-pointer hover:ring-2 hover:ring-primary transition"
+              className={`h-20 w-20 border rounded-xl p-1 object-cover cursor-pointer transition
+                ${idx === selectedImageIndex ? "ring-2 ring-primary" : ""}
+              `}
+              onClick={() => setSelectedImageIndex(idx)}
             />
           ))}
         </div>

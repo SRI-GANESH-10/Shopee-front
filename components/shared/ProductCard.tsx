@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Carousel } from "@/components/shared/Carousel"; // adjust path if needed
 
 export default function ProductCard({
   item,
@@ -16,22 +17,20 @@ export default function ProductCard({
   onAdd,
   onDelete,
 }: any) {
-
   const router = useRouter();
+
+  const images =
+    item.images && item.images.length > 0
+      ? item.images
+      : [`https://picsum.photos/id/${item.id}/2400/1400`];
+
   return (
-    <Card className="hover:shadow-lg transition-all rounded-xl border p-2"       onClick={() => router.push(`/dashboard/product/${item.id}`)}>
+    <Card
+      className="hover:shadow-lg transition-all rounded-xl border p-2"
+      onClick={() => router.push(`/dashboard/product/${item.id}`)}
+    >
       <CardHeader className="p-0">
-        <div className="h-44 w-full bg-white flex items-center justify-center overflow-hidden rounded-md">
-          <img
-            src={
-              item.images
-                ? item.images[0]
-                : `https://picsum.photos/id/${item.id}/2400/1400`
-            }
-            alt={item.title}
-            className="h-full object-contain"
-          />
-        </div>
+        <Carousel images={images} />
       </CardHeader>
 
       <CardContent className="space-y-3 pt-4">
@@ -55,7 +54,10 @@ export default function ProductCard({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onDecrease(item.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDecrease(item.id);
+                  }}
                 >
                   -
                 </Button>
@@ -64,12 +66,25 @@ export default function ProductCard({
                   {cartItem.quantity}
                 </span>
 
-                <Button size="sm" variant="outline" onClick={() => onIncrease(item)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onIncrease(item);
+                  }}
+                >
                   +
                 </Button>
               </div>
             ) : (
-              <Button size="sm" onClick={() => onAdd(item)}>
+              <Button
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAdd(item);
+                }}
+              >
                 Add to Cart
               </Button>
             )}
@@ -78,7 +93,10 @@ export default function ProductCard({
               <Button
                 size="icon"
                 variant="outline"
-                onClick={() => onDelete(item.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(item.id);
+                }}
               >
                 <Trash2 size={18} />
               </Button>

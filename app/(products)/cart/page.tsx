@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeProduct , addProduct} from "@/app/redux/productOperationSlice";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const cart = useSelector((state: any) => state.productOperations);
@@ -18,6 +19,8 @@ export default function CartPage() {
 
   const shippingCharge = 8.0;
   const total = subtotal + shippingCharge;
+
+  const router = useRouter();
 
 
   return (
@@ -157,7 +160,9 @@ export default function CartPage() {
           </div>
 
           {/* Checkout Button */}
-          <Button className="w-full h-12 text-base rounded-full mb-3 bg-black text-white hover:bg-gray-900">
+          <Button className="w-full h-12 text-base rounded-full mb-3 bg-black text-white hover:bg-gray-900" onClick={()=>{
+            router.push('/checkout')
+          }}>
             Checkout
           </Button>
         </Card>

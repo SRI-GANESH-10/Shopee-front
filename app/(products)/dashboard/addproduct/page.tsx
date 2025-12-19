@@ -10,10 +10,8 @@ import { addProduct } from "@/app/redux/productsSlice";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
-
-    const dispatch:any = useDispatch();
-
-    const router = useRouter();
+  const dispatch: any = useDispatch();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     id: "",
@@ -21,6 +19,7 @@ export default function Page() {
     quantity: 0,
     price: 0,
     description: "",
+    images: [] as File[],
   });
 
   const handleChange = (
@@ -28,14 +27,38 @@ export default function Page() {
   ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.name === "quantity" || e.target.name === "price"
+          ? Number(e.target.value)
+          : e.target.value,
     });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFormData({
+        ...formData,
+        images: Array.from(e.target.files),
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addProduct(formData))
-    router.push('/dashboard')
+
+    const data = new FormData();
+    data.append("id", formData.id);
+    data.append("name", formData.name);
+    data.append("quantity", formData.quantity.toString());
+    data.append("price", formData.price.toString());
+    data.append("description", formData.description);
+
+    formData.images.forEach((file) => {
+      data.append("images", file);
+    });
+
+    dispatch(addProduct(data));
+    router.push("/dashboard");
   };
 
   return (
@@ -90,6 +113,16 @@ export default function Page() {
               value={formData.description}
               onChange={handleChange}
               required
+            />
+
+            <input
+              type="file"
+              name="images"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+              required
+              className="border rounded p-2 w-full"
             />
 
             <Button type="submit" className="w-full">

@@ -22,8 +22,9 @@ export default function Login() {
     try {
       const { result } = await useLogin(email, password);
       if (result.success) {
-        dispatch(setUserDetails(result.user));
-        dispatch(setUserDetailsInCookie(result.user));
+        const setData = {...result.user , token:result.token}
+        dispatch(setUserDetails(setData));
+        dispatch(setUserDetailsInCookie(setData));
         dispatch(getName(email));
         router.push("/dashboard");
       }
