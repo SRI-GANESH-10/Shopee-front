@@ -14,10 +14,9 @@ export default function Page() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    id: "",
     name: "",
-    quantity: 0,
-    price: 0,
+    quantity: "",
+    price: "",
     description: "",
     images: [] as File[],
   });
@@ -47,7 +46,6 @@ export default function Page() {
     e.preventDefault();
 
     const data = new FormData();
-    data.append("id", formData.id);
     data.append("name", formData.name);
     data.append("quantity", formData.quantity.toString());
     data.append("price", formData.price.toString());
@@ -70,14 +68,6 @@ export default function Page() {
 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              type="number"
-              name="id"
-              placeholder="Product ID"
-              value={formData.id}
-              onChange={handleChange}
-              required
-            />
 
             <Input
               type="text"
@@ -121,7 +111,6 @@ export default function Page() {
               multiple
               accept="image/*"
               onChange={handleFileChange}
-              required
               className="border rounded p-2 w-full"
             />
 

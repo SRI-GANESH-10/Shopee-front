@@ -2,11 +2,12 @@ import api from "@/services/api";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Product {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   price: number;
   quantity: number;
+  images:string[];
 }
 
 interface ProductsState {
@@ -91,7 +92,7 @@ const productsSlice = createSlice({
         deleteProduct.fulfilled,
         (state, action: PayloadAction<string>) => {
           state.items = state.items.filter(
-            (item) => item.id !== action.payload
+            (item) => item._id !== action.payload
           );
           state.status = "success";
         }

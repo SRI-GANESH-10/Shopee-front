@@ -22,7 +22,7 @@ export default function ProductDetailsPage() {
     dispatch(fethProducts());
   }, [dispatch]);
 
-  const product = products?.find((p: any) => p.id === productId);
+  const product = products?.find((p: any) => p._id === productId);
 
   if (!product)
     return <p className="p-4 text-muted-foreground">Loading product...</p>;
@@ -49,7 +49,7 @@ export default function ProductDetailsPage() {
           <img
             src={
               product?.images?.[selectedImageIndex] ??
-              `https://picsum.photos/id/${product.id}/1600/1200`
+              `https://res.cloudinary.com/dqk3pzhan/image/upload/v1766135284/Shopee_product_default_ihlots.png`
             }
             alt={product.name}
             className="object-contain max-h-full transition-transform duration-300 hover:scale-105"

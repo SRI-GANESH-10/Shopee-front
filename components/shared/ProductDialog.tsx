@@ -30,7 +30,7 @@ export default function ProductDetailsDialog({
         <img
           src={
             product?.images?.[0] ??
-            `https://picsum.photos/id/${product?.id}/1200/800`
+            `https://res.cloudinary.com/dqk3pzhan/image/upload/v1766135284/Shopee_product_default_ihlots.png`
           }
           alt={product?.name}
           className="w-full h-60 object-contain rounded-md"

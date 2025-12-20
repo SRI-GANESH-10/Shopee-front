@@ -6,6 +6,7 @@ import { removeProduct , addProduct} from "@/app/redux/productOperationSlice";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { Product } from "@/app/redux/productsSlice";
 
 export default function CartPage() {
   const cart = useSelector((state: any) => state.productOperations);
@@ -44,13 +45,13 @@ export default function CartPage() {
           {cart.length === 0 ? (
             <p className="text-gray-500">Your bag is empty.</p>
           ) : (
-            cart.map((item: any) => (
-              <div key={item.id} className="flex gap-5 border-b pb-6 mb-6">
+            cart.map((item: Product) => (
+              <div key={item._id} className="flex gap-5 border-b pb-6 mb-6">
                 {/* Product Image */}
                 <img
                   src={
-                    item.images?.[0] ??
-                    `https://picsum.photos/id/${item.id}/300/200`
+                    item?.images?.[0] ??
+                    `https://res.cloudinary.com/dqk3pzhan/image/upload/v1766135284/Shopee_product_default_ihlots.png`
                   }
                   alt={item.name}
                   className="w-32 h-32 object-contain rounded"
@@ -62,15 +63,13 @@ export default function CartPage() {
                   <p className="text-gray-500 text-sm">{item.description}</p>
 
                   <div className="text-sm text-gray-600 mt-1">
-                    <p>Size: {item.size ?? "8"}</p>
-                    {/* Quantity Selector */}
                     <div className="mt-3 flex items-center gap-3">
                       <span className="text-sm text-gray-600">Quantity:</span>
 
                       <div className="flex items-center border rounded-lg overflow-hidden">
                         {/* Decrease Quantity */}
                         <button
-                          onClick={() => dispatch(removeProduct(item.id))}
+                          onClick={() => dispatch(removeProduct(item._id))}
                           className="px-3 py-1 text-lg font-semibold hover:bg-gray-100"
                         >
                           -
@@ -99,7 +98,7 @@ export default function CartPage() {
                     </button>
                     <button
                       className="underline text-gray-600"
-                      onClick={() => dispatch(removeProduct(item.id))}
+                      onClick={() => dispatch(removeProduct(item._id))}
                     >
                       Remove
                     </button>

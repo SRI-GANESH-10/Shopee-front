@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { clearProducts } from "@/app/redux/productOperationSlice";
 import { usePlaceOrderMutation } from "@/app/redux/api/orderApi";
+import { Product } from "@/app/redux/productsSlice";
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -140,8 +141,8 @@ export default function CheckoutPage() {
             <CardTitle>Order Summary</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {cart.map((item: any) => (
-              <div key={item.id} className="flex justify-between text-sm">
+            {cart.map((item: Product) => (
+              <div key={item._id} className="flex justify-between text-sm">
                 <span className="truncate">
                   {item.name} × {item.quantity ?? 1}
                 </span>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, fethProducts } from "@/app/redux/productsSlice";
+import { deleteProduct, fethProducts, Product } from "@/app/redux/productsSlice";
 import { addProduct, removeProduct } from "@/app/redux/productOperationSlice";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -39,12 +39,12 @@ export default function DashBoard() {
       <ScrollArea className="h-[calc(100vh-200px)] pr-2">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products?.items?.length > 0 ? (
-            products.items.map((item: any) => {
-              const isInCart = cart.find((prod: any) => prod.id === item.id);
+            products.items.map((item: Product) => {
+              const isInCart = cart.find((prod: any) => prod._id === item._id);
 
               return (
                 <ProductCard
-                  key={item.id}
+                  key={item._id}
                   item={item}
                   cartItem={isInCart}
                   isAdmin={userDetails?.isAdmin === "true"}

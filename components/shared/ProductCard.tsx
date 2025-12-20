@@ -22,12 +22,12 @@ export default function ProductCard({
   const images =
     item.images && item.images.length > 0
       ? item.images
-      : [`https://picsum.photos/id/${item.id}/2400/1400`];
+      : [`https://res.cloudinary.com/dqk3pzhan/image/upload/v1766135284/Shopee_product_default_ihlots.png`];
 
   return (
     <Card
       className="hover:shadow-lg transition-all rounded-xl border p-2"
-      onClick={() => router.push(`/dashboard/product/${item.id}`)}
+      onClick={() => router.push(`/dashboard/product/${item._id}`)}
     >
       <CardHeader className="p-0">
         <Carousel images={images} />
@@ -56,7 +56,7 @@ export default function ProductCard({
                   variant="outline"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDecrease(item.id);
+                    onDecrease(item._id);
                   }}
                 >
                   -
@@ -95,7 +95,7 @@ export default function ProductCard({
                 variant="outline"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(item.id);
+                  onDelete(item._id);
                 }}
               >
                 <Trash2 size={18} />
